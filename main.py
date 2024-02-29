@@ -16,9 +16,9 @@ async def sum(ctx:commands.Context, num1:int, num2:int):
 
 @bot.command()
 async def speak(ctx:commands.Context, *,text): # *, para ser um texto inteiro
-    await ctx.send(text)
+    await ctx.reply(text)
 
-@bot.event
+@bot.event # Por algum motivo, se tiver este evento ativado, o comando de Speak não funciona
 async def on_message(msg:discord.Message):
     if msg.author.bot:
         return

@@ -19,6 +19,27 @@ async def speak(ctx:commands.Context, *,text): # *, para ser um texto inteiro
     await ctx.send(text)
 
 @bot.event
+async def on_message(msg:discord.Message):
+    if msg.author.bot:
+        return
+    await msg.add_reaction("💚")
+
+@bot.event
+async def on_guild_channel_create(channel:discord.abc.GuildChannel):
+    print(bot.guilds.count)
+    await channel.send(f"First!")
+
+@bot.event
+async def on_member_join(member:discord.Member):
+    welcome_channel = bot.get_channel(1212568753146171422) # ID do canal de boas vindas
+    await welcome_channel.send(f'{member.display_name} Entrou no servidor, seja bem-vindo!')
+
+@bot.event
+async def on_member_remove(member:discord.Member):
+    bye_channel = bot.get_channel(1212568753146171422) # ID do canal de saídas
+    await bye_channel.send(f'{member.display_name} Saiu do servidor, iremos sentir a tua falta')
+
+@bot.event
 async def on_ready():
     print("Bot Online")
 

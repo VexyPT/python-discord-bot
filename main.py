@@ -4,6 +4,8 @@ intents = discord.Intents.all()
 from secret import TOKEN
 bot = commands.Bot(command_prefix=".", intents=intents)
 
+fun_stuff = False
+
 @bot.command()
 async def hello(ctx:commands.Context):
     user = ctx.author
@@ -18,16 +20,22 @@ async def sum(ctx:commands.Context, num1:int, num2:int):
 async def speak(ctx:commands.Context, *,text): # *, para ser um texto inteiro
     await ctx.reply(text)
 
-@bot.event # Por algum motivo, se tiver este evento ativado, o comando de Speak não funciona
-async def on_message(msg:discord.Message):
-    if msg.author.bot:
-        return
-    await msg.add_reaction("💚")
+@bot.command()
+async def activateFunstuff(ctx:commands.Context):
+    global fun_stuff
+    fun_stuff = True
+    embed = discord.Embed(
+        description="✅ Funstuff Activated"
+    )
+    await ctx.reply(embed=embed)
 
 @bot.event
 async def on_guild_channel_create(channel:discord.abc.GuildChannel):
-    print(bot.guilds.count)
-    await channel.send(f"First!")
+    print(fun_stuff)
+    if fun_stuff:
+        await channel.send("First!")
+    else:
+        return
 
 @bot.event
 async def on_member_join(member:discord.Member):
